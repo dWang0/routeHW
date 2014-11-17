@@ -25,14 +25,15 @@ public class RouteNetworkImpl implements RouteNetwork
 	/**
 	 * Default, and only constructor.
 	 */
+	//constructor
 	public RouteNetworkImpl()
 	{
-		//initializeNetwork();
 	}
 	
 	/**
 	 * @see RouteNetwork.initializeNetwork()
 	 */
+	//initializes network
 	@Override
 	public void initializeNetwork()
 	{
@@ -42,6 +43,7 @@ public class RouteNetworkImpl implements RouteNetwork
 	/**
 	 * @see RouteNetwork.initializeNetwork(Route... routes)
 	 */
+	//initializes network with routes
 	@Override
 	public void initializeNetwork(Route... routes)
 	{
@@ -54,17 +56,20 @@ public class RouteNetworkImpl implements RouteNetwork
 	/**
 	 * @see RouteNetwork.addRoute(Route route)
 	 */
+	//this method adds a route to the network
 	@Override
 	public void addRoute(Route route) throws RouteException
 	{
 		if (network == null){
-			throw new RouteException("Bro, what're you doing? Network hasn't been initiated.");
+			//then the network has not been initialized yet
+			throw new RouteException("Bro, what're you doing? Network hasn't been initiated yet.");
 		}
 		else {
 			network.add(route);
 		}
 	}
 
+	//this checks to see if there is a path between a source and a destination
 	@Override
 	public boolean isPathFrom(String source, String destination) throws RouteException
 	{
@@ -79,80 +84,6 @@ public class RouteNetworkImpl implements RouteNetwork
 		}
 		return false;
 	}
-
-	@Override
-	public Route[] getShortestPath(String source, String destination)
-			throws RouteException
-	{
-		Route[] shortestRoute;
-		
-		//generate list of nodes
-		for (Route r : network){
-			nodes.add(new Node(r));
-			System.out.println("creating Node: " + r);
-		}
-		
-		//generate optimized connections between nodes
-		System.out.println("Finding starting points!");
-		for (Node n : nodes){
-			if(n.getMyRoute().getSource() == source){
-				System.out.println("New starting point: " + n.getMyRoute());
-				n.setStep(0);
-				System.out.println("Calling recursive function!");
-				generateConnections(n, source);
-			}
-			/**
-			for (Node node: nodes){
-				node.setAlreadyVisited(false);
-			}
-			**/
-		}
-		
-		System.out.println("did I make it this far?");
-		//find shortest path to destination
-		Node tempShortestNode = new Node(null);
-		//for each node
-		System.out.println("Entering finding shortest path for loop!");
-		for (Node n : nodes){
-			System.out.println("Looking at node: " + n.getMyRoute());
-			//node goes to destination
-			if(n.getMyRoute().getDestination() == destination){
-				//if node does not have a parent then it cannot be traced back to a source
-				if(n.getParent() == null){
-					if(n.getMyRoute().getSource() != source){
-						System.out.println("This node does not connect to a source");
-						continue;
-					}
-					else{	//then direct route
-						tempShortestNode = n;
-						break;
-					}
-				}
-				//now we know that this node can be traced to a source node
-				//find node with smallest step count -> shortest route
-				if(tempShortestNode.getStep() == null){	//if first potential node
-					tempShortestNode = n;
-				}
-				else{	//compare to tempShortestNode
-					if(n.getStep() < tempShortestNode.getStep()){
-						tempShortestNode = n;
-					}
-				}
-			}
-		}
-		
-		//now we have the right destination node
-		//now we need to trace back to source node
-		System.out.println("we made it to parent trace back");
-		System.out.println(tempShortestNode.getMyRoute());
-		
-		shortestRoute = new Route[1 + tempShortestNode.getStep()];
-		System.out.println(shortestRoute.length);
-		recursiveGetRoute(tempShortestNode,shortestRoute);
-		System.out.println(shortestRoute[0]);
-		return shortestRoute;
-				
-	}
 	
 	public boolean recursivePathCheck(Route route, String destination){
 		if (route.getDestination().equals(destination)){
@@ -165,11 +96,78 @@ public class RouteNetworkImpl implements RouteNetwork
 		}
 		return false;
 	}
+
+	@Override
+	public Route[] getShortestPath(String source, String destination)
+			throws RouteException
+	{
+		if(!isPathFrom(source, destination)){
+			throw new RouteException("A path does not exist between the source and destination");
+		}
+		
+		Route[] shortestRoute;
+		
+		//generate list of nodes from input routes
+		for (Route r : network){
+			nodes.add(new Node(r));
+		}
+		
+		//generate shortest path connections between nodes
+		for (Node n : nodes){
+			//from each potential starting location
+			if(n.getMyRoute().getSource() == source){
+				n.setStep(0);
+				//generate shortest path connections to other nodes
+				generateConnections(n, source);
+			}
+		}
+		
+		//find shortest path to destination
+		Node tempShortestGoalNode = new Node(null); //used as a temp variable to compare to possible goal nodes
+		//for each node
+		for (Node n : nodes){
+			//if node goes to destination
+			if(n.getMyRoute().getDestination() == destination){
+				//if node does not have a parent it is either a direct route or cannot be traced back to a source
+				if(n.getParent() == null){
+					//if it is not a direct rout
+					if(n.getMyRoute().getSource() != source){
+						//then it cannot be traced back to a source
+						continue;
+					}
+					else{	//then direct route and best choice
+						tempShortestGoalNode = n;
+						break;
+					}
+				}
+				//at this point we know that this node can be traced back to a source node
+				//find node with smallest step count -> shortest route
+				if(tempShortestGoalNode.getStep() == null){	//if first potential node
+					tempShortestGoalNode = n;
+				}
+				else{	//compare to tempShortestNode and set to shortestDestination
+					if(n.getStep() < tempShortestGoalNode.getStep()){
+						tempShortestGoalNode = n;
+					}
+				}
+			}
+		}
+		
+		//now we have the optimal destination node
+		//trace goal node back to source node		
+		shortestRoute = new Route[1 + tempShortestGoalNode.getStep()];
+		recursiveGetRoute(tempShortestGoalNode,shortestRoute);
+		System.out.println("Printing out route:");
+		for(Route route : shortestRoute){
+			System.out.println(route);
+		}
+		return shortestRoute;
+				
+	}
 	
 	public void generateConnections(Node node, String source){
 		//for each node in the list of nodes
 		for(Node n : nodes){
-			System.out.println("In rec function: " + n.getMyRoute());
 			//if the node's source is the same as my current destination
 			if (n.getMyRoute().getSource() == node.getMyRoute().getDestination()){
 				//then set node's parent to current node if current route is shorter
@@ -179,7 +177,6 @@ public class RouteNetworkImpl implements RouteNetwork
 					}
 					else{
 						n.setParent(node);		//set parent to current node
-						System.out.println("Setting parent");
 						//set node's step count to 1 + the current node's step count
 						if(node.getStep() == null){	
 							n.setStep(1);
@@ -198,11 +195,9 @@ public class RouteNetworkImpl implements RouteNetwork
 					if(n.getStep() > (1 + node.getStep())){
 						n.setParent(node);
 						n.setStep(1 + node.getStep());
-						//n.setAlreadyVisited(true);
 						generateConnections(n,source);
 					}
 				}
-				//generateConnections(n);
 			}
 		}
 	}

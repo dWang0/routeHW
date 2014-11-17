@@ -89,7 +89,6 @@ public class SampleRouteNetworkTest
 		expected[1] = new Route ("C","E");
 		expected[2] = new Route ("E","F");
 		
-		System.out.println(network.getShortestPath("A", "F"));
 		assertArrayEquals(expected, network.getShortestPath("A", "F"));
 		
 	}
@@ -123,8 +122,10 @@ public class SampleRouteNetworkTest
 		assertArrayEquals(expected1, network.getShortestPath("A", "F"));
 		//Running getShortestPath more than once within one test case would break it
 		//not sure is this is supposed to not happen
-		//assertArrayEquals(expected2, network.getShortestPath("E", "D"));
+		assertArrayEquals(expected2, network.getShortestPath("A", "C"));
 	}
+	
+	@Test
 	public void shortRouteTest4() throws RouteException
 	{
 		RouteNetwork network = new RouteNetworkImpl();
@@ -151,5 +152,30 @@ public class SampleRouteNetworkTest
 		expected2[3] = new Route ("C", "D");
 		
 		assertArrayEquals(expected2, network.getShortestPath("E", "D"));	
+	}
+	
+	@Test
+	public void wormholeTest() throws RouteException
+	{
+		RouteNetwork network = new RouteNetworkImpl();
+		network.initializeNetwork( new Route[] {
+				new Route("A", "B"),
+				new Route("B", "C"),
+				new Route("C", "D"),
+				new Route("D", "E"),
+				new Route("E", "F"),
+				new Route("F", "A"),
+				new Route("D", "F"),
+				new Route("A", null),
+				new Route(null, "D")
+			}
+		);
+		Route[] expected = new Route[3];
+		expected[0] = new Route ("A",null);
+		expected[1] = new Route (null,"D");
+		expected[2] = new Route ("D","F");
+		
+		System.out.println(expected);
+		assertArrayEquals(expected, network.getShortestPath("A", "F"));	
 	}
 }

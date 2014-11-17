@@ -4,13 +4,10 @@ public class Node {
 	private Integer step;
 	private Route myRoute;
 	private Node parent;
-//	private boolean alreadyVisited;
 	
 	public Node(Route route){
 		myRoute = route;
-	//	setAlreadyVisited(false);
 	}
-	
 	public Integer getStep() {
 		return step;
 	}
@@ -29,14 +26,4 @@ public class Node {
 	public void setParent(Node parent) {
 		this.parent = parent;
 	}
-/**
-	public boolean isAlreadyVisited() {
-		return alreadyVisited;
-	}
-
-	public void setAlreadyVisited(boolean alreadyVisited) {
-		this.alreadyVisited = alreadyVisited;
-	}
-**/	
-	
 }
