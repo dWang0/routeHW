@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Encapsulate field &apos;routes.Node.alreadyVisited&apos; in &apos;routes.Node&apos;&#x0D;&#x0A;- Original project: &apos;Routes&apos;&#x0D;&#x0A;- Original element: &apos;routes.Node.alreadyVisited&apos;&#x0D;&#x0A;- Getter method name: &apos;isAlreadyVisited&apos;&#x0D;&#x0A;- Setter method name: &apos;setAlreadyVisited&apos;&#x0D;&#x0A;- Field visibility: &apos;public&apos;&#x0D;&#x0A;- Use getter and setter methods in declaring type" comments="false" declaring="true" description="Encapsulate field &apos;alreadyVisited&apos;" flags="589830" getter="isAlreadyVisited" id="org.eclipse.jdt.ui.self.encapsulate" input="/src&lt;routes{Node.java[Node^alreadyVisited" insertion="6" setter="setAlreadyVisited" stamp="1416190392047" version="1.0" visibility="1"/>
+</session>

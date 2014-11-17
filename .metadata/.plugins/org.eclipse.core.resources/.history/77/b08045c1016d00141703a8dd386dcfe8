@@ -1,0 +1,16 @@
+package routes;
+
+import java.util.ArrayList;
+
+class Node{
+	  private String source;
+	  private ArrayList<Node> destinations = new ArrayList<Node>();
+	  
+	  public Node (String source, String destination){
+	    this.source = source;
+	    //this.destinations.add(destination);
+	  }
+	  
+	  public void addEdge(Node toNode){
+	    this.destinations.add(toNode);
+	  }

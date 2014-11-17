@@ -1,0 +1,139 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Gary F. Pollice
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Used in CS3733, Software Engineering at Worcester Polytechnic Institute
+ *******************************************************************************/
+
+package routes;
+
+import java.util.ArrayList;
+
+/**
+ * This is the concrete implementation of the route network.
+ * @version Nov 7, 2014
+ */
+public class RouteNetworkImpl implements RouteNetwork
+{
+	private ArrayList<Route> network;
+	private ArrayList<Node> nodes = new ArrayList<Node>();
+	
+	/**
+	 * Default, and only constructor.
+	 */
+	public RouteNetworkImpl()
+	{
+		//initializeNetwork();
+	}
+	
+	/**
+	 * @see RouteNetwork.initializeNetwork()
+	 */
+	@Override
+	public void initializeNetwork()
+	{
+		network = new ArrayList<Route>();
+	}
+
+	/**
+	 * @see RouteNetwork.initializeNetwork(Route... routes)
+	 */
+	@Override
+	public void initializeNetwork(Route... routes)
+	{
+		this.network = new ArrayList<Route>();
+		for (Route r: routes) {
+			network.add(r);
+		}
+	}
+
+	/**
+	 * @see RouteNetwork.addRoute(Route route)
+	 */
+	@Override
+	public void addRoute(Route route) throws RouteException
+	{
+		if (network == null){
+			throw new RouteException("Bro, what're you doing? Network hasn't been initiated.");
+		}
+		else {
+			network.add(route);
+		}
+	}
+
+	@Override
+	public boolean isPathFrom(String source, String destination) throws RouteException
+	{
+		if (this.network == null)
+			throw new RouteException("Can't check path if network hasn't been initiated, bro");
+		else {
+			for (Route r : network){
+				if (r.getSource().equals(source)) {
+					return recursivePathCheck(r,destination);
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public Route[] getShortestPath(String source, String destination)
+			throws RouteException
+	{
+		for (Route r : network){
+			nodes.add(new Node(r));
+		}
+		for (Node n : nodes){
+			if(n.getMyRoute().getSource() == source){
+				n.setStep(0);
+				recursiveGenerateConnections(n, destination);
+			}
+		}
+				
+	}
+	
+	public boolean recursivePathCheck(Route route, String destination){
+		if (route.getDestination().equals(destination)){
+			return true;
+		}
+		for (Route r : network){
+			if (r.getSource().equals(route.getDestination())) {
+				return recursivePathCheck(r,destination);
+			}
+		}
+		return false;
+	}
+	
+	public void recursiveGenerateConnections(Node node, String finalDestination){
+		//for each node in the list of nodes
+		for(Node n : nodes){
+			//if the node's source is the same as my current destination
+			if (n.getMyRoute().getSource() == node.getMyRoute().getDestination()){
+				//then set node's parent to current node if current route is shorter
+				if(n.getParent() == null){	//if the node does not have a parent yet
+					n.setParent(node);		//set parent to current node
+					//set node's step count to 1 + the current node's step count
+					if(node.getStep() == null){	
+						n.setStep(1);
+					}
+					else{
+						n.setStep(1 + node.getStep());
+					}
+				}
+				//if the node already has a parent
+				else{
+					//if node's route is longer than current node's route
+					//then update node's parent and step count
+					if(n.getStep() > (1 + node.getStep())){
+						n.setParent(node);
+						n.setStep(1 + node.getStep());
+					}
+				}
+			}
+		}
+	}
+}
