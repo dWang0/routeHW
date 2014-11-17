@@ -121,35 +121,8 @@ public class SampleRouteNetworkTest
 		expected2[3] = new Route ("C", "D");
 		
 		assertArrayEquals(expected1, network.getShortestPath("A", "F"));
-		//Running getShortestPath more than once within one test case would break it
-		//not sure is this is supposed to not happen
-		//assertArrayEquals(expected2, network.getShortestPath("E", "D"));
-	}
-	public void shortRouteTest4() throws RouteException
-	{
-		RouteNetwork network = new RouteNetworkImpl();
-		network.initializeNetwork( new Route[] {
-				new Route("A", "B"),
-				new Route("B", "C"),
-				new Route("C", "D"),
-				new Route("D", "E"),
-				new Route("E", "F"),
-				new Route("A", "C"),
-				new Route("C", "E"),
-				new Route("F", "A")
-			}
-		);
-		Route[] expected1 = new Route[3];
-		expected1[0] = new Route ("A","C");
-		expected1[1] = new Route ("C","E");
-		expected1[2] = new Route ("E","F");
+		assertTrue(network.isPathFrom("E", "D"));
+		assertArrayEquals(expected2, network.getShortestPath("E", "D"));
 		
-		Route[] expected2 = new Route[4];
-		expected2[0] = new Route ("E", "F");
-		expected2[1] = new Route ("F", "A");
-		expected2[2] = new Route ("A", "C");
-		expected2[3] = new Route ("C", "D");
-		
-		assertArrayEquals(expected2, network.getShortestPath("E", "D"));	
 	}
 }
