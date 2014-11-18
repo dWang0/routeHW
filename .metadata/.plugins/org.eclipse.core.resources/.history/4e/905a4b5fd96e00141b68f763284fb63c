@@ -52,7 +52,6 @@ public class SampleRouteNetworkTest
 		assertFalse(network.isPathFrom("A", "Y"));
 	}
 	
-	
 	@Test
 	public void shortRouteTest() throws RouteException
 	{

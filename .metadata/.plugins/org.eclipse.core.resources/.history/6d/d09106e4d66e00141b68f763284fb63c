@@ -25,9 +25,9 @@ public class RouteNetworkImpl implements RouteNetwork
 	/**
 	 * Default, and only constructor.
 	 */
+	//constructor
 	public RouteNetworkImpl()
 	{
-		//Do nothing on purpose
 	}
 	
 	/**
@@ -85,12 +85,6 @@ public class RouteNetworkImpl implements RouteNetwork
 		return false;
 	}
 	
-	/**
-	 * Helper function to check if a Route has a connection to a destination
-	 * @param route The current Route the function is processing
-	 * @param destination If the given Route contains destination, then the function will stop recursion
-	 * @return boolean True if the given Route has the same destination, false otherwise
-	 */
 	public boolean recursivePathCheck(Route route, String destination){
 		if (route.getDestination().equals(destination)){
 			return true;
@@ -102,10 +96,7 @@ public class RouteNetworkImpl implements RouteNetwork
 		}
 		return false;
 	}
-	
-	/**
-	 * @see Route.getShortestPath
-	 */
+
 	@Override
 	public Route[] getShortestPath(String source, String destination)
 			throws RouteException
@@ -171,12 +162,6 @@ public class RouteNetworkImpl implements RouteNetwork
 				
 	}
 	
-	/**
-	 * Generates a representation of the current network with nodes. It has a starting point
-	 * and tries to create chains of nodes as long as possible without repeating Nodes.
-	 * @param node The next node to be added to the representation of the network
-	 * @param source The starting point of the network
-	 */
 	public void generateConnections(Node node, String source){
 		//for each node in the list of nodes
 		for(Node n : nodes){
@@ -214,11 +199,6 @@ public class RouteNetworkImpl implements RouteNetwork
 		}
 	}
 	
-	/**
-	 * Helper function to generate a list of Routes when given a node
-	 * @param node The current node the function is processing
-	 * @param route The list of routes currently attached to the Node
-	 */
 	public void recursiveGetRoute(Node node, Route[] route){
 		if(node.getParent() == null){
 			route[0] = node.getMyRoute();

@@ -25,9 +25,9 @@ public class RouteNetworkImpl implements RouteNetwork
 	/**
 	 * Default, and only constructor.
 	 */
+	//constructor
 	public RouteNetworkImpl()
 	{
-		//Do nothing on purpose
 	}
 	
 	/**
@@ -86,10 +86,10 @@ public class RouteNetworkImpl implements RouteNetwork
 	}
 	
 	/**
-	 * Helper function to check if a Route has a connection to a destination
-	 * @param route The current Route the function is processing
-	 * @param destination If the given Route contains destination, then the function will stop recursion
-	 * @return boolean True if the given Route has the same destination, false otherwise
+	 * 
+	 * @param route 
+	 * @param destination
+	 * @return
 	 */
 	public boolean recursivePathCheck(Route route, String destination){
 		if (route.getDestination().equals(destination)){

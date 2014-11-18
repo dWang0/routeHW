@@ -1,0 +1,2 @@
+commit_dialog_history_messages=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<messages>\r\n<message>Check out the last 2 test cases. Running getShortestRoute twice in a&\#x0A;test case breaks our code. Are we only suppose to test one thing at a&\#x0A;time, even though we want to use the same network?</message>\r\n</messages>
+eclipse.preferences.version=1
