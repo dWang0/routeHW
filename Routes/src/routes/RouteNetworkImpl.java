@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class RouteNetworkImpl implements RouteNetwork
 {
 	private ArrayList<Route> network;
-	private ArrayList<Node> nodes = new ArrayList<Node>();
+	private ArrayList<Node> nodes;
 	
 	/**
 	 * Default, and only constructor.
@@ -106,6 +106,7 @@ public class RouteNetworkImpl implements RouteNetwork
 		}
 		
 		Route[] shortestRoute;
+		nodes = new ArrayList<Node>();
 		
 		//generate list of nodes from input routes
 		for (Route r : network){

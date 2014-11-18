@@ -69,6 +69,20 @@ public class SampleRouteNetworkTest
 		assertArrayEquals(temp, network.getShortestPath("A", "D"));
 	}
 	
+	@Test(expected=RouteException.class)
+	public void shortRouteTestInvalid() throws RouteException
+	{
+		RouteNetwork network = new RouteNetworkImpl();
+		network.initializeNetwork( new Route[] {
+				new Route("A", "B"),
+				new Route("B", "C"),
+				new Route("X", "Y"),
+				new Route("C", "D"),
+				new Route("A", "D")
+			}
+		);
+		network.getShortestPath("A", "X");
+	}
 
 	@Test
 	public void shortRouteTest2() throws RouteException
@@ -108,6 +122,8 @@ public class SampleRouteNetworkTest
 				new Route("F", "A")
 			}
 		);
+		
+		
 		Route[] expected1 = new Route[3];
 		expected1[0] = new Route ("A","C");
 		expected1[1] = new Route ("C","E");
@@ -128,13 +144,8 @@ public class SampleRouteNetworkTest
 		
 		
 		//we can do multiple testings, but if we start somewhere else (see comment below) it fails
-		/**
 		Route[] actual = network.getShortestPath("B", "D");
-		for (Route route : actual){
-			System.out.println(route);
-		}
 		assertArrayEquals(expected3, actual);
-		**/
 	}
 	
 	@Test
