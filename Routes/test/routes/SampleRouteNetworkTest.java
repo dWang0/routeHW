@@ -138,14 +138,8 @@ public class SampleRouteNetworkTest
 		expected3[1] = new Route ("C","D");
 		
 		assertArrayEquals(expected1, network.getShortestPath("A", "F"));
-		//Running getShortestPath more than once within one test case would break it
-		//not sure is this is supposed to not happen
 		assertArrayEquals(expected2, network.getShortestPath("A", "D"));
-		
-		
-		//we can do multiple testings, but if we start somewhere else (see comment below) it fails
-		Route[] actual = network.getShortestPath("B", "D");
-		assertArrayEquals(expected3, actual);
+		assertArrayEquals(expected3, network.getShortestPath("B", "D"));
 	}
 	
 	@Test
