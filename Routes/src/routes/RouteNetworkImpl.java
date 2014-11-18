@@ -100,7 +100,7 @@ public class RouteNetworkImpl implements RouteNetwork
 	@Override
 	public Route[] getShortestPath(String source, String destination)
 			throws RouteException
-	{
+	{	
 		if(!isPathFrom(source, destination)){
 			throw new RouteException("A path does not exist between the source and destination");
 		}
@@ -157,10 +157,6 @@ public class RouteNetworkImpl implements RouteNetwork
 		//trace goal node back to source node		
 		shortestRoute = new Route[1 + tempShortestGoalNode.getStep()];
 		recursiveGetRoute(tempShortestGoalNode,shortestRoute);
-		System.out.println("Printing out route:");
-		for(Route route : shortestRoute){
-			System.out.println(route);
-		}
 		return shortestRoute;
 				
 	}
